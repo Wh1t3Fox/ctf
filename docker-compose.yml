@@ -12,6 +12,7 @@ services:
         environment:
             - DISPLAY=$DISPLAY
         volumes:
+            - "./config/:/home/user/config/"
             - "/tmp/.X11-unix/:/tmp/.X11-unix/"
     spindra:
         container_name: "spindra"

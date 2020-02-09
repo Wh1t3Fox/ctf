@@ -1,0 +1,65 @@
+version: "3.7"
+services:
+    burpsuite:
+        container_name: "burpsuite"
+        image: "wh1t3f0x/burpsuite:latest"
+        dns:
+            - 1.1.1.1
+            - 1.0.0.1
+        networks:
+            ctf_net:
+                ipv4_address: 172.99.99.2
+        environment:
+            - DISPLAY=$DISPLAY
+        volumes:
+            - "/tmp/.X11-unix/:/tmp/.X11-unix/"
+    spindra:
+        container_name: "spindra"
+        image: "wh1t3f0x/spindra:latest"
+        stdin_open: true
+        tty: true
+        dns:
+            - 1.1.1.1
+            - 1.0.0.1
+        networks:
+            - ctf_net
+        environment:
+            - DISPLAY=$DISPLAY
+            - HTTP_PROXY=http://172.99.99.2:8080
+            - BURPSUITE=1
+        volumes:
+            - "./certificates/:/tmp/certificates/"
+            - "./mount/:/home/dev/Downloads/"
+            - "/tmp/.X11-unix/:/tmp/.X11-unix/"
+        depends_on:
+            - burpsuite
+    browser:
+        container_name: "browser"
+        image: "wh1t3f0x/web:firefox"
+        dns:
+            - 1.1.1.1
+            - 1.0.0.1
+        networks:
+            - ctf_net
+        environment:
+            - DISPLAY=$DISPLAY
+            - BROWSER=firefox
+            - PROXY=http://172.99.99.2:8080
+            - WAIT_FOR_CERT=1
+        volumes:
+            - "./certificates:/usr/lib/mozilla/certificates"
+            - "./mount/:/home/user/Downloads/"
+            - "/tmp/.X11-unix/:/tmp/.X11-unix/"
+            - "/dev/shm:/dev/shm"
+        devices:
+            - "/dev/snd:/dev/snd"
+            - "/dev/dri:/dev/dri"
+        depends_on:
+            - burpsuite
+            - spindra
+networks:
+    ctf_net:
+        ipam:
+            driver: default
+            config:
+                - subnet: "172.99.99.0/24"

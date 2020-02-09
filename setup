@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Create tmux session
+tmux new-session -s ctf -n docker-compose -d 'docker-compose up'
+
+# Wait for spindra to start
+until [ "$(docker ps --format '{{.Names}}' --filter name='spindra')" == "spindra" ]; do
+    sleep 1
+done
+
+# Add spindra to tmux
+tmux new-window -t ctf:1 -n spindra -d 'docker exec -it spindra bash'
+tmux new-window -t ctf:2 -n ipython -d 'ipython'
+tmux new-window -t ctf:3 -n term -d
+
+# attach
+tmux -2 attach-session -t ctf:0

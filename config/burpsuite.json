@@ -202,7 +202,7 @@
                 },
                 {
                     "boolean_operator":"and",
-                    "enabled":false,
+                    "enabled":true,
                     "match_relationship":"is_in_target_scope",
                     "match_type":"url"
                 }
@@ -210,7 +210,7 @@
         },
         "intercept_server_responses":{
             "automatically_update_content_length_header_when_the_response_is_edited":true,
-            "do_intercept":false,
+            "do_intercept":true,
             "rules":[
                 {
                     "boolean_operator":"or",
@@ -240,7 +240,7 @@
                 },
                 {
                     "boolean_operator":"and",
-                    "enabled":false,
+                    "enabled":true,
                     "match_relationship":"is_in_target_scope",
                     "match_type":"url"
                 }

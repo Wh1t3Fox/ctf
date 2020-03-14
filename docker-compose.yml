@@ -13,6 +13,7 @@ services:
             - DISPLAY=$DISPLAY
         volumes:
             - "./config/:/home/user/config/"
+            - "./mount/:/home/user/Downloads/"
             - "/tmp/.X11-unix/:/tmp/.X11-unix/"
     spindra:
         container_name: "spindra"
